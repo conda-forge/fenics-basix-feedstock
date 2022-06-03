@@ -10,7 +10,7 @@ source:
   sha256: a54f5e442b7cbf3dbb6319c682f9161272557bd7f42e2b8b8ccef88bc1b7a22f
 
 build:
-  skip: true  # [win]
+  skip: true  # [win or python_impl == 'pypy']
   number: 3
 
 outputs:
