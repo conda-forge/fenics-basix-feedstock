@@ -21,9 +21,6 @@ outputs:
         - {{ pin_subpackage("fenics-libbasix", max_pin="x.x.x") }}
     requirements:
       build:
-        - python                                 # [build_platform != target_platform]
-        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - pybind11                               # [build_platform != target_platform]
         - {{ compiler('cxx') }}
         - cmake
         - make
