@@ -25,5 +25,13 @@ python:
 - 3.7.* *_cpython
 - 3.8.* *_cpython
 - 3.9.* *_cpython
+python_impl:
+- cpython
+- cpython
+- cpython
+- cpython
 target_platform:
 - linux-64
+zip_keys:
+- - python
+  - python_impl
