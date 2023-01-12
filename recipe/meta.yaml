@@ -1,5 +1,5 @@
 {% set name = "fenics-basix" %}
-{% set version = "0.5.1" %}
+{% set version = "0.6.0" %}
 
 package:
   name: {{ name|lower }}-meta
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/fenics/basix/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 69133476ac35f0bd0deccb480676030378c341d7dfb2adaca22cd16b7e1dc1cb
+  sha256: 687ae53153c98facac4080dcdc7081701db1dcea8c5e7ae3feb72aec17f83304
 
 build:
   skip: true  # [win or python_impl == 'pypy']
-  number: 1
+  number: 0
 
 outputs:
   - name: fenics-libbasix
