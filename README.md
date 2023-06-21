@@ -1,11 +1,11 @@
-About fenics-basix
-==================
+About fenics-basix-feedstock
+============================
+
+Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/fenics-basix-feedstock/blob/main/LICENSE.txt)
 
 Home: https://fenicsproject.org
 
 Package license: MIT
-
-Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/fenics-basix-feedstock/blob/main/LICENSE.txt)
 
 Summary: Basix is a finite element definition and tabulation runtime library
 
