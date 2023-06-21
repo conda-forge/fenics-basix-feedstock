@@ -11,7 +11,7 @@ source:
 
 build:
   skip: true  # [win or python_impl == 'pypy']
-  number: 0
+  number: 1
 
 outputs:
   - name: fenics-libbasix
@@ -47,6 +47,7 @@ outputs:
         - python
         - pip
         - pybind11
+        - pybind11-abi
         - {{ pin_subpackage('fenics-libbasix', exact=True) }}
       run:
         - python
