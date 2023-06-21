@@ -47,6 +47,7 @@ outputs:
         - python
         - pip
         - pybind11
+        - pybind11-abi
         - {{ pin_subpackage('fenics-libbasix', exact=True) }}
       run:
         - python
