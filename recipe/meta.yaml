@@ -64,6 +64,16 @@ outputs:
       commands:
         - pytest -v test/test_create.py
 
+  - name: fenics-basix-pybind11-abi
+    requirements:
+      run:
+        - {{ pin_subpackage('fenics-basix', exact=True) }}
+      # changing C++ compiler version changes ABI
+      run_constrained:
+        - {{ cxx_compiler }} {{ cxx_compiler_version }}
+    test:
+      imports:
+        - basix
 
 about:
   home: https://fenicsproject.org
