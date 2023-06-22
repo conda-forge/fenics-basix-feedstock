@@ -13,6 +13,10 @@ source:
 build:
   skip: true  # [win or python_impl == 'pypy']
   number: 2
+  force_use_keys:
+    # separate builds for each Python
+    # this duplicates libbasix outputs, but results in faster builds
+    - python
 
 outputs:
   - name: fenics-libbasix
