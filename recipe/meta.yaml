@@ -1,5 +1,6 @@
 {% set name = "fenics-basix" %}
 {% set version = "0.6.0" %}
+{% set abi_version = "0.{}.{}".format(pybind11_abi, cxx_compiler_version) %}
 
 package:
   name: {{ name|lower }}-meta
@@ -52,6 +53,7 @@ outputs:
       run:
         - python
         - {{ pin_subpackage('fenics-libbasix', exact=True) }}
+        - {{ pin_subpackage('fenics-basix-pybind11-abi', exact=True) }}
         - numpy
     test:
       requires:
@@ -65,15 +67,19 @@ outputs:
         - pytest -v test/test_create.py
 
   - name: fenics-basix-pybind11-abi
+    version: "{{ abi_version }}"
+    build:
+      run_exports:
+        - {{ pin_subpackage('fenics-basix-pybind11-abi', max_pin='x.x.x') }}
+
     requirements:
-      run:
-        - {{ pin_subpackage('fenics-basix', exact=True) }}
-      # changing C++ compiler version changes ABI
       run_constrained:
+        - pybind11-abi {{ pybind11_abi }}
         - {{ cxx_compiler }} {{ cxx_compiler_version }}
+
     test:
-      imports:
-        - basix
+      commands:
+        - echo 'ok'
 
 about:
   home: https://fenicsproject.org
