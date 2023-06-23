@@ -1,5 +1,6 @@
 {% set name = "fenics-basix" %}
 {% set version = "0.6.0" %}
+{% set abi_version = "0.{}.{}".format(pybind11_abi, cxx_compiler_version) %}
 
 package:
   name: {{ name|lower }}-meta
@@ -11,7 +12,11 @@ source:
 
 build:
   skip: true  # [win or python_impl == 'pypy']
-  number: 1
+  number: 2
+  force_use_keys:
+    # separate builds for each Python
+    # this duplicates libbasix outputs, but results in faster builds
+    - python
 
 outputs:
   - name: fenics-libbasix
@@ -34,6 +39,9 @@ outputs:
         - test -f $PREFIX/lib/libbasix${SHLIB_EXT}
   - name: fenics-basix
     script: build-basix-py.sh
+    build:
+      run_exports:
+        - fenics-basix-pybind11-abi =={{ abi_version }}
     requirements:
       build:
         - {{ compiler('cxx') }}
@@ -64,6 +72,22 @@ outputs:
       commands:
         - pytest -v test/test_create.py
 
+  - name: fenics-basix-pybind11-abi
+    version: "{{ abi_version }}"
+    build:
+      run_exports:
+        - fenics-basix-pybind11-abi =={{ abi_version }}
+
+    requirements:
+      run:
+        - {{ pin_subpackage('fenics-basix', exact=True) }}
+      run_constrained:
+        - pybind11-abi {{ pybind11_abi }}
+        - {{ cxx_compiler }} {{ cxx_compiler_version }}
+
+    test:
+      commands:
+        - echo 'ok'
 
 about:
   home: https://fenicsproject.org
