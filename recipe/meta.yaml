@@ -12,7 +12,7 @@ source:
 
 build:
   skip: true  # [win or python_impl == 'pypy']
-  number: 2
+  number: 3
   force_use_keys:
     # separate builds for each Python
     # this duplicates libbasix outputs, but results in faster builds
@@ -75,6 +75,8 @@ outputs:
   - name: fenics-basix-pybind11-abi
     version: "{{ abi_version }}"
     build:
+      force_use_keys:
+        - python
       run_exports:
         - fenics-basix-pybind11-abi =={{ abi_version }}
 
