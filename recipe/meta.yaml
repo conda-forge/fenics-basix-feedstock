@@ -1,6 +1,5 @@
 {% set name = "fenics-basix" %}
-{% set version = "0.7.0" %}
-{% set abi_version = "0.{}.{}".format(pybind11_abi, cxx_compiler_version) %}
+{% set version = "0.8.0" %}
 
 package:
   name: {{ name|lower }}-meta
@@ -8,11 +7,11 @@ package:
 
 source:
   url: https://github.com/fenics/basix/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 9bee81b396ee452eec8d9735f278cb44cb6994c6bc30aec8ed9bb4b12d83fa7f
+  sha256: b299af82daf8fa3e4845e17f202491fe71b313bf6ab64c767a5287190b3dd7fe
 
 build:
-  skip: true  # [win or python_impl == 'pypy']
-  number: 1
+  skip: true  # [win or python_impl == 'pypy' or py<39]
+  number: 0
   force_use_keys:
     # separate builds for each Python
     # this duplicates libbasix outputs, but results in faster builds
@@ -27,40 +26,51 @@ outputs:
     requirements:
       build:
         - {{ compiler('cxx') }}
+        - {{ stdlib("c") }}
         - cmake
         - make
         - pkg-config
       host:
         - libblas
-        - libcblas
+        - libcblas  # not linked, but needed for FindLAPACK during build
         - liblapack
+      run:
+        - __osx >=10.13  # [osx and x86_64]
     test:
       commands:
         - test -f $PREFIX/lib/libbasix${SHLIB_EXT}
+
   - name: fenics-basix
     script: build-basix-py.sh
     build:
       run_exports:
-        - fenics-basix-pybind11-abi =={{ abi_version }}
+        strong_constrains:
+          - {{ pin_compatible("nanobind", max_pin="x.x") }}
     requirements:
       build:
         - {{ compiler('cxx') }}
+        - {{ stdlib("c") }}
         - cmake
         - make
         - pkg-config
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - pybind11                               # [build_platform != target_platform]
+        - nanobind                               # [build_platform != target_platform]
       host:
+        - scikit-build-core
         - python
         - pip
-        - pybind11
-        - pybind11-abi
+        - nanobind
+        # - nanobind-abi
         - {{ pin_subpackage('fenics-libbasix', exact=True) }}
       run:
         - python
         - {{ pin_subpackage('fenics-libbasix', exact=True) }}
         - numpy
+      run_constrained:
+        # nanobind doens't yet have an abi metapacakage,
+        # but hope it doesn't get bumped in patch releases
+        - {{ pin_compatible("nanobind", max_pin="x.x") }}
     test:
       requires:
         - pytest
@@ -71,25 +81,6 @@ outputs:
         - basix
       commands:
         - pytest -v test/test_create.py
-
-  - name: fenics-basix-pybind11-abi
-    version: "{{ abi_version }}"
-    build:
-      force_use_keys:
-        - python
-      run_exports:
-        - fenics-basix-pybind11-abi =={{ abi_version }}
-
-    requirements:
-      run:
-        - {{ pin_subpackage('fenics-basix', exact=True) }}
-      run_constrained:
-        - pybind11-abi {{ pybind11_abi }}
-        - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
-
-    test:
-      commands:
-        - echo 'ok'
 
 about:
   home: https://fenicsproject.org

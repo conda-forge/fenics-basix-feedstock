@@ -52,13 +52,6 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>linux_64_python3.8.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fenics-basix-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_python3.8.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
               <td>linux_64_python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
@@ -84,13 +77,6 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fenics-basix-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_python3.12.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>linux_aarch64_python3.8.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fenics-basix-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_aarch64_python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
@@ -122,13 +108,6 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>linux_ppc64le_python3.8.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fenics-basix-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_ppc64le_python3.8.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
               <td>linux_ppc64le_python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
@@ -154,13 +133,6 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fenics-basix-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.12.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
-              <td>osx_64_python3.8.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fenics-basix-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.8.____cpython" alt="variant">
                 </a>
               </td>
             </tr><tr>
@@ -192,13 +164,6 @@ Current build status
                 </a>
               </td>
             </tr><tr>
-              <td>osx_arm64_python3.8.____cpython</td>
-              <td>
-                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
-                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/fenics-basix-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_python3.8.____cpython" alt="variant">
-                </a>
-              </td>
-            </tr><tr>
               <td>osx_arm64_python3.9.____cpython</td>
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=16330&branchName=main">
@@ -219,7 +184,6 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-fenics--basix-green.svg)](https://anaconda.org/conda-forge/fenics-basix) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/fenics-basix.svg)](https://anaconda.org/conda-forge/fenics-basix) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/fenics-basix.svg)](https://anaconda.org/conda-forge/fenics-basix) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/fenics-basix.svg)](https://anaconda.org/conda-forge/fenics-basix) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-fenics--basix--pybind11--abi-green.svg)](https://anaconda.org/conda-forge/fenics-basix-pybind11-abi) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/fenics-basix-pybind11-abi.svg)](https://anaconda.org/conda-forge/fenics-basix-pybind11-abi) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/fenics-basix-pybind11-abi.svg)](https://anaconda.org/conda-forge/fenics-basix-pybind11-abi) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/fenics-basix-pybind11-abi.svg)](https://anaconda.org/conda-forge/fenics-basix-pybind11-abi) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-fenics--libbasix-green.svg)](https://anaconda.org/conda-forge/fenics-libbasix) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/fenics-libbasix.svg)](https://anaconda.org/conda-forge/fenics-libbasix) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/fenics-libbasix.svg)](https://anaconda.org/conda-forge/fenics-libbasix) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/fenics-libbasix.svg)](https://anaconda.org/conda-forge/fenics-libbasix) |
 
 Installing fenics-basix
@@ -232,16 +196,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `fenics-basix, fenics-basix-pybind11-abi, fenics-libbasix` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `fenics-basix, fenics-libbasix` can be installed with `conda`:
 
 ```
-conda install fenics-basix fenics-basix-pybind11-abi fenics-libbasix
+conda install fenics-basix fenics-libbasix
 ```
 
 or with `mamba`:
 
 ```
-mamba install fenics-basix fenics-basix-pybind11-abi fenics-libbasix
+mamba install fenics-basix fenics-libbasix
 ```
 
 It is possible to list all of the versions of `fenics-basix` available on your platform with `conda`:
@@ -288,7 +252,7 @@ available continuous integration services. Thanks to the awesome service provide
 [CircleCI](https://circleci.com/), [AppVeyor](https://www.appveyor.com/),
 [Drone](https://cloud.drone.io/welcome), and [TravisCI](https://travis-ci.com/)
 it is possible to build and upload installable packages to the
-[conda-forge](https://anaconda.org/conda-forge) [Anaconda-Cloud](https://anaconda.org/)
+[conda-forge](https://anaconda.org/conda-forge) [anaconda.org](https://anaconda.org/)
 channel for Linux, Windows and OSX respectively.
 
 To manage the continuous integration and simplify feedstock maintenance
