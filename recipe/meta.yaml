@@ -10,7 +10,7 @@ source:
   sha256: b299af82daf8fa3e4845e17f202491fe71b313bf6ab64c767a5287190b3dd7fe
 
 build:
-  skip: true  # [win or python_impl == 'pypy']
+  skip: true  # [win or python_impl == 'pypy' or py<39]
   number: 0
   force_use_keys:
     # separate builds for each Python
