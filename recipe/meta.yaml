@@ -34,6 +34,8 @@ outputs:
         - libblas
         - libcblas  # not linked, but needed for FindLAPACK during build
         - liblapack
+      run:
+        - __osx >=10.13  # [osx and x86_64]
     test:
       commands:
         - test -f $PREFIX/lib/libbasix${SHLIB_EXT}
