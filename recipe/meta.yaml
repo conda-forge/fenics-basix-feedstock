@@ -1,17 +1,19 @@
 {% set name = "fenics-basix" %}
-{% set version = "0.8.0" %}
+{% set version = "0.9.0.dev" %}
 
 package:
   name: {{ name|lower }}-meta
   version: {{ version }}
 
 source:
-  url: https://github.com/fenics/basix/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: b299af82daf8fa3e4845e17f202491fe71b313bf6ab64c767a5287190b3dd7fe
+  # url: https://github.com/fenics/basix/archive/refs/tags/v{{ version }}.tar.gz
+  # sha256: b299af82daf8fa3e4845e17f202491fe71b313bf6ab64c767a5287190b3dd7fe
+  url: https://github.com/fenics/basix/archive/f32916ee2bcf0e8020fa242f3233abfda2336202.tar.gz
+    
 
 build:
-  skip: true  # [win or python_impl == 'pypy' or py<39]
-  number: 1
+  skip: true  # [python_impl == 'pypy' or py<39]
+  number: 0
   force_use_keys:
     # separate builds for each Python
     # this duplicates libbasix outputs, but results in faster builds
@@ -19,7 +21,8 @@ build:
 
 outputs:
   - name: fenics-libbasix
-    script: build-libbasix.sh
+    script: build-libbasix.sh  # [not win]
+    script: build-libbasix.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage("fenics-libbasix", max_pin="x.x.x") }}
@@ -28,7 +31,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ stdlib("c") }}
         - cmake
-        - make
+        - make  # [unix]
         - pkg-config
       host:
         - libblas
@@ -36,10 +39,12 @@ outputs:
         - liblapack
     test:
       commands:
-        - test -f $PREFIX/lib/libbasix${SHLIB_EXT}
+        - test -f $PREFIX/lib/libbasix${SHLIB_EXT}  # [not win]
+        - if exist %LIBRARY_PREFIX%\bin\basix.dll (exit 0) else (exit 1)  # [win]
 
   - name: fenics-basix
-    script: build-basix-py.sh
+    script: build-basix-py.sh  # [not win]
+    script: build-basix-py.bat  # [win]
     build:
       run_exports:
         strong_constrains:
