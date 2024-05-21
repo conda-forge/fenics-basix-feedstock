@@ -11,7 +11,7 @@ source:
 
 build:
   skip: true  # [win or python_impl == 'pypy' or py<39]
-  number: 0
+  number: 1
   force_use_keys:
     # separate builds for each Python
     # this duplicates libbasix outputs, but results in faster builds
@@ -34,8 +34,6 @@ outputs:
         - libblas
         - libcblas  # not linked, but needed for FindLAPACK during build
         - liblapack
-      run:
-        - __osx >=10.13  # [osx and x86_64]
     test:
       commands:
         - test -f $PREFIX/lib/libbasix${SHLIB_EXT}
