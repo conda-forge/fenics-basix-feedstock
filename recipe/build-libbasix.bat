@@ -9,7 +9,6 @@ cd build
 cmake -G "NMake Makefiles" ^
       -DCMAKE_INSTALL_PREFIX:PATH="%LIBRARY_PREFIX%" ^
       -DCMAKE_PREFIX_PATH:PATH="%LIBRARY_PREFIX%" ^
-      -DINSTALL_RUNTIME_DEPENDENCIES=OFF ^
       %CMAKE_ARGS% ^
       ..
 if errorlevel 1 exit 1
