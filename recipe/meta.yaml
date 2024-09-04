@@ -11,7 +11,7 @@ source:
 
 build:
   skip: true  # [win or python_impl == 'pypy' or py<39]
-  number: 1
+  number: 2
   force_use_keys:
     # separate builds for each Python
     # this duplicates libbasix outputs, but results in faster builds
@@ -53,12 +53,13 @@ outputs:
         - pkg-config
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - nanobind                               # [build_platform != target_platform]
+        - nanobind <2  # [build_platform != target_platform]
       host:
         - scikit-build-core
         - python
         - pip
-        - nanobind
+        # unpin nanobind for 0.9
+        - nanobind <2
         # - nanobind-abi
         - {{ pin_subpackage('fenics-libbasix', exact=True) }}
       run:
