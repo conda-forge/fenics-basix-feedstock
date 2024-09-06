@@ -87,13 +87,12 @@ outputs:
   - name: fenics-basix-nanobind-abi
     version: "{{ abi_version }}"
     build:
+      force_use_keys:
+        - python
       run_exports:
         - fenics-basix-nanobind-abi =={{ abi_version }}
 
     requirements:
-      host:
-        - python
-        - nanobind
       run:
         - {{ pin_subpackage('fenics-basix', exact=True) }}
       run_constrained:
