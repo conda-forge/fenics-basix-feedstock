@@ -1,5 +1,7 @@
 {% set name = "fenics-basix" %}
+# TODO: bump nanobind in conda_build_config for 0.9
 {% set version = "0.8.0" %}
+{% set abi_version = "0.{}.{}".format(nanobind, cxx_compiler_version) %}
 
 package:
   name: {{ name|lower }}-meta
@@ -11,7 +13,7 @@ source:
 
 build:
   skip: true  # [win or python_impl == 'pypy' or py<39]
-  number: 2
+  number: 3
   force_use_keys:
     # separate builds for each Python
     # this duplicates libbasix outputs, but results in faster builds
@@ -42,8 +44,7 @@ outputs:
     script: build-basix-py.sh
     build:
       run_exports:
-        strong_constrains:
-          - {{ pin_compatible("nanobind", max_pin="x.x") }}
+        - fenics-basix-nanobind-abi =={{ abi_version }}
     requirements:
       build:
         - {{ compiler('cxx') }}
@@ -53,13 +54,12 @@ outputs:
         - pkg-config
         - python                                 # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - nanobind <2  # [build_platform != target_platform]
+        - nanobind  # [build_platform != target_platform]
       host:
         - scikit-build-core
         - python
         - pip
-        # unpin nanobind for 0.9
-        - nanobind <2
+        - nanobind
         # - nanobind-abi
         - {{ pin_subpackage('fenics-libbasix', exact=True) }}
       run:
@@ -67,9 +67,12 @@ outputs:
         - {{ pin_subpackage('fenics-libbasix', exact=True) }}
         - numpy
       run_constrained:
-        # nanobind doens't yet have an abi metapacakage,
-        # but hope it doesn't get bumped in patch releases
+        # TODO: remove these in 0.9
+        # redundant with abi package below
+        # here to avoid breaking existing downstream builds
+        # built before abi package was restored
         - {{ pin_compatible("nanobind", max_pin="x.x") }}
+        - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
     test:
       requires:
         - pytest
@@ -81,6 +84,28 @@ outputs:
       commands:
         - pytest -v test/test_create.py
 
+  - name: fenics-basix-nanobind-abi
+    version: "{{ abi_version }}"
+    build:
+      force_use_keys:
+        - python
+      run_exports:
+        - fenics-basix-nanobind-abi =={{ abi_version }}
+
+    requirements:
+      run:
+        - {{ pin_subpackage('fenics-basix', exact=True) }}
+      run_constrained:
+        # nanobind doesn't yet have an abi metapacakage,
+        # but hope it doesn't get bumped in patch releases
+        - nanobind {{ nanobind }}.*
+        # we shouldn't need to restrict compiler version,
+        # but nanobind includes compiler version in the ABI
+        - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
+
+    test:
+      commands:
+        - echo 'ok'
 about:
   home: https://fenicsproject.org
   summary: Basix is a finite element definition and tabulation runtime library
