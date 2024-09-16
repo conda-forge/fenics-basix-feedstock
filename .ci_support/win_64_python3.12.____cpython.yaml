@@ -12,6 +12,8 @@ libcblas:
 - 3.9 *netlib
 liblapack:
 - 3.9 *netlib
+nanobind:
+- '1.9'
 pin_run_as_build:
   python:
     min_pin: x.x
@@ -25,3 +27,4 @@ target_platform:
 zip_keys:
 - - python
   - python_impl
+  - channel_sources
