@@ -15,8 +15,7 @@ package:
 source:
   # url: https://github.com/fenics/basix/archive/refs/tags/v{{ version }}.tar.gz
   # sha256: b299af82daf8fa3e4845e17f202491fe71b313bf6ab64c767a5287190b3dd7fe
-  url: https://github.com/fenics/basix/archive/6460e77b4507dee00e2c9040e27abaafd1db1556.tar.gz
-    
+  url: https://github.com/fenics/basix/archive/891e9a1400126651b99189e47b3a117787d9cfa9.tar.gz
 
 build:
   skip: true  # [python_impl == 'pypy' or py<39]
