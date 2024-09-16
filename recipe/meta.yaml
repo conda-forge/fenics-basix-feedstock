@@ -2,7 +2,7 @@
 {% set version = "0.9.0.dev" %}
 
 {# TODO: bump nanobind in conda_build_config for 0.9 #}
-{% if win and not cxx_compiler_version %}
+{% if win and cxx_compiler_version is not defined %}
 {# windows doesn't set cxx compiler version, get year out of 'vs2022' #}
 {% set cxx_compiler_version = cxx_compiler | replace("vs", "") %}
 {% endif %}
