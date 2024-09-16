@@ -5,4 +5,4 @@ c_compiler:    # [win]
 cxx_compiler:  # [win]
 - vs2022       # [win]
 nanobind:
-  - 1.9
+  - 2.1
