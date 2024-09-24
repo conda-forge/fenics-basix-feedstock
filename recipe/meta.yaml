@@ -13,7 +13,7 @@ source:
 
 build:
   skip: true  # [win or python_impl == 'pypy' or py<39]
-  number: 3
+  number: 4
   force_use_keys:
     # separate builds for each Python
     # this duplicates libbasix outputs, but results in faster builds
@@ -72,7 +72,8 @@ outputs:
         # here to avoid breaking existing downstream builds
         # built before abi package was restored
         - {{ pin_compatible("nanobind", max_pin="x.x") }}
-        - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
     test:
       requires:
         - pytest
@@ -101,7 +102,8 @@ outputs:
         - nanobind {{ nanobind }}.*
         # we shouldn't need to restrict compiler version,
         # but nanobind includes compiler version in the ABI
-        - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
+        - {{ compiler("c") }}
+        - {{ compiler("cxx") }}
 
     test:
       commands:
