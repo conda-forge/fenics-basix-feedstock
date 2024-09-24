@@ -4,7 +4,6 @@
 {% if cxx_compiler_version is not defined %}
 {# needed for rerender, won't ever be true in builds #}
 {% set cxx_compiler_version = "0" %}
-{% set c_compiler_version = "0" %}
 {% endif %}
 {% set abi_version = "0.{}.{}".format(nanobind, cxx_compiler_version) %}
 
@@ -76,16 +75,18 @@ outputs:
         # redundant with abi package below
         # here to avoid breaking existing downstream builds
         # built before abi package was restored
-        - {{ pin_compatible("nanobind", max_pin="x.x") }}
-        - {{ c_compiler }}_impl_{{ target_platform }} {{ c_compiler_version }}
+        # pin both compiler by name and _impl_ package
+        # clangxx_impl_osx-64 depends on clangxx,
+        # while gxx depends on gxx_impl_linux-64
+        - {{ cxx_compiler }} {{ cxx_compiler_version }}
         - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}
     test:
       requires:
         - pytest
         - pytest-xdist
-        # just make sure the above constraint is a real package
-        - {{ c_compiler }}_impl_{{ target_platform }}
-        - {{ cxx_compiler }}_impl_{{ target_platform }}
+        # make sure the above constraint is a real package
+        - {{ cxx_compiler }}
+        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}
       source_files:
         - test
       imports:
@@ -110,7 +111,10 @@ outputs:
         - nanobind {{ nanobind }}.*
         # we shouldn't need to restrict compiler version,
         # but nanobind includes compiler version in the ABI
-        - {{ c_compiler }}_impl_{{ target_platform }} {{ c_compiler_version }}
+        # pin both compiler by name and _impl_ package
+        # clangxx_impl_osx-64 depends on clangxx,
+        # while gxx depends on gxx_impl_linux-64
+        - {{ cxx_compiler }} {{ cxx_compiler_version }}
         - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}
 
     test:
