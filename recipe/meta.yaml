@@ -1,6 +1,10 @@
 {% set name = "fenics-basix" %}
 # TODO: bump nanobind in conda_build_config for 0.9
 {% set version = "0.8.0" %}
+{% if cxx_compiler_version is not defined %}
+{# needed for rerender, won't ever be true in builds #}
+{% set cxx_compiler_version = "0" %}
+{% endif %}
 {% set abi_version = "0.{}.{}".format(nanobind, cxx_compiler_version) %}
 
 package:
