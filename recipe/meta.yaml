@@ -4,6 +4,7 @@
 {% if cxx_compiler_version is not defined %}
 {# needed for rerender, won't ever be true in builds #}
 {% set cxx_compiler_version = "0" %}
+{% set c_compiler_version = "0" %}
 {% endif %}
 {% set abi_version = "0.{}.{}".format(nanobind, cxx_compiler_version) %}
 
@@ -76,12 +77,15 @@ outputs:
         # here to avoid breaking existing downstream builds
         # built before abi package was restored
         - {{ pin_compatible("nanobind", max_pin="x.x") }}
-        - {{ compiler("c") }}
-        - {{ compiler("cxx") }}
+        - {{ c_compiler }}_impl_{{ target_platform }} {{ c_compiler_version }}
+        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}
     test:
       requires:
         - pytest
         - pytest-xdist
+        # just make sure the above constraint is a real package
+        - {{ c_compiler }}_impl_{{ target_platform }}
+        - {{ cxx_compiler }}_impl_{{ target_platform }}
       source_files:
         - test
       imports:
@@ -106,8 +110,8 @@ outputs:
         - nanobind {{ nanobind }}.*
         # we shouldn't need to restrict compiler version,
         # but nanobind includes compiler version in the ABI
-        - {{ compiler("c") }}
-        - {{ compiler("cxx") }}
+        - {{ c_compiler }}_impl_{{ target_platform }} {{ c_compiler_version }}
+        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}
 
     test:
       commands:
