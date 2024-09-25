@@ -1,6 +1,10 @@
 {% set name = "fenics-basix" %}
 # TODO: bump nanobind in conda_build_config for 0.9
 {% set version = "0.8.0" %}
+{% if cxx_compiler_version is not defined %}
+{# needed for rerender, won't ever be true in builds #}
+{% set cxx_compiler_version = "0" %}
+{% endif %}
 {% set abi_version = "0.{}.{}".format(nanobind, cxx_compiler_version) %}
 
 package:
@@ -13,7 +17,7 @@ source:
 
 build:
   skip: true  # [win or python_impl == 'pypy' or py<39]
-  number: 3
+  number: 4
   force_use_keys:
     # separate builds for each Python
     # this duplicates libbasix outputs, but results in faster builds
@@ -71,12 +75,18 @@ outputs:
         # redundant with abi package below
         # here to avoid breaking existing downstream builds
         # built before abi package was restored
-        - {{ pin_compatible("nanobind", max_pin="x.x") }}
+        # pin both compiler by name and _impl_ package
+        # clangxx_impl_osx-64 depends on clangxx,
+        # while gxx depends on gxx_impl_linux-64
         - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
+        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}.*
     test:
       requires:
         - pytest
         - pytest-xdist
+        # make sure the above constraint is a real package
+        - {{ cxx_compiler }}
+        - {{ cxx_compiler }}_impl_{{ target_platform }}
       source_files:
         - test
       imports:
@@ -101,7 +111,11 @@ outputs:
         - nanobind {{ nanobind }}.*
         # we shouldn't need to restrict compiler version,
         # but nanobind includes compiler version in the ABI
+        # pin both compiler by name and _impl_ package
+        # clangxx_impl_osx-64 depends on clangxx,
+        # while gxx depends on gxx_impl_linux-64
         - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
+        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}.*
 
     test:
       commands:
