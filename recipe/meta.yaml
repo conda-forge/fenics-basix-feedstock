@@ -99,7 +99,6 @@ outputs:
 
     requirements:
       run_constrained:
-        - {{ pin_subpackage('fenics-basix', exact=True) }}
         # nanobind doesn't yet have an abi metapacakage,
         # but hope it doesn't get bumped in patch releases
         - nanobind {{ nanobind }}.*
