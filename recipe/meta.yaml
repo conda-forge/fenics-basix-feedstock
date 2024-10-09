@@ -1,9 +1,9 @@
 {% set name = "fenics-basix" %}
-# TODO: bump nanobind in conda_build_config for 0.9
-{% set version = "0.8.0" %}
-{% if cxx_compiler_version is not defined %}
-{# needed for rerender, won't ever be true in builds #}
-{% set cxx_compiler_version = "0" %}
+{% set version = "0.9.0" %}
+
+{% if win and cxx_compiler_version is not defined %}
+{# windows doesn't set cxx compiler version, get year out of 'vs2022' #}
+{% set cxx_compiler_version = cxx_compiler | replace("vs", "") %}
 {% endif %}
 {% set abi_version = "0.{}.{}".format(nanobind, cxx_compiler_version) %}
 
@@ -13,11 +13,11 @@ package:
 
 source:
   url: https://github.com/fenics/basix/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: b299af82daf8fa3e4845e17f202491fe71b313bf6ab64c767a5287190b3dd7fe
+  sha256: 60e96b2393084729b261cb10370f0e44d12735ab3dbd1f15890dec23b9e85329
 
 build:
-  skip: true  # [win or python_impl == 'pypy' or py<39]
-  number: 4
+  skip: true  # [python_impl == 'pypy' or py<39]
+  number: 0
   force_use_keys:
     # separate builds for each Python
     # this duplicates libbasix outputs, but results in faster builds
@@ -25,7 +25,8 @@ build:
 
 outputs:
   - name: fenics-libbasix
-    script: build-libbasix.sh
+    script: build-libbasix.sh  # [not win]
+    script: build-libbasix.bat  # [win]
     build:
       run_exports:
         - {{ pin_subpackage("fenics-libbasix", max_pin="x.x.x") }}
@@ -34,7 +35,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ stdlib("c") }}
         - cmake
-        - make
+        - make  # [unix]
         - pkg-config
       host:
         - libblas
@@ -42,10 +43,12 @@ outputs:
         - liblapack
     test:
       commands:
-        - test -f $PREFIX/lib/libbasix${SHLIB_EXT}
+        - test -f $PREFIX/lib/libbasix${SHLIB_EXT}  # [not win]
+        - if exist %LIBRARY_PREFIX%\bin\basix.dll (exit 0) else (exit 1)  # [win]
 
   - name: fenics-basix
-    script: build-basix-py.sh
+    script: build-basix-py.sh  # [not win]
+    script: build-basix-py.bat  # [win]
     build:
       run_exports:
         - fenics-basix-nanobind-abi =={{ abi_version }}
@@ -69,24 +72,17 @@ outputs:
       run:
         - python
         - {{ pin_subpackage('fenics-libbasix', exact=True) }}
-        - numpy
-      run_constrained:
-        # TODO: remove these in 0.9
-        # redundant with abi package below
-        # here to avoid breaking existing downstream builds
-        # built before abi package was restored
-        # pin both compiler by name and _impl_ package
-        # clangxx_impl_osx-64 depends on clangxx,
-        # while gxx depends on gxx_impl_linux-64
-        - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
-        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}.*
+        - numpy >=1.21
+        - fenics-basix-nanobind-abi =={{ abi_version }}
     test:
       requires:
         - pytest
         - pytest-xdist
-        # make sure the above constraint is a real package
-        - {{ cxx_compiler }}
-        - {{ cxx_compiler }}_impl_{{ target_platform }}
+        # make sure the abi constraint is on an installable package
+        - {{ cxx_compiler }}  # [not win]
+        - {{ cxx_compiler }}_impl_{{ target_platform }}  # [not win]
+        - vs_{{ target_platform }}  # [win]
+        - {{ compiler("cxx") }}
       source_files:
         - test
       imports:
@@ -100,11 +96,10 @@ outputs:
       force_use_keys:
         - python
       run_exports:
-        - fenics-basix-nanobind-abi =={{ abi_version }}
+        strong:
+          - fenics-basix-nanobind-abi =={{ abi_version }}
 
     requirements:
-      run:
-        - {{ pin_subpackage('fenics-basix', exact=True) }}
       run_constrained:
         # nanobind doesn't yet have an abi metapacakage,
         # but hope it doesn't get bumped in patch releases
@@ -114,8 +109,11 @@ outputs:
         # pin both compiler by name and _impl_ package
         # clangxx_impl_osx-64 depends on clangxx,
         # while gxx depends on gxx_impl_linux-64
-        - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
-        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}.*
+        - {{ cxx_compiler }} {{ cxx_compiler_version }}.*  # [not win]
+        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}.*  # [not win]
+        # Windows only has vs_win-64 2022.11
+        # it's unclear if the .11 is required
+        - vs_{{ target_platform }} {{ cxx_compiler_version }}.*   # [win]
 
     test:
       commands:
