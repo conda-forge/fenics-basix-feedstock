@@ -78,10 +78,10 @@ outputs:
       requires:
         - pytest
         - pytest-xdist
-        # make sure the above constraint is a real package
+        # make sure the abi constraint is on an installable package
         - {{ cxx_compiler }}  # [not win]
         - {{ cxx_compiler }}_impl_{{ target_platform }}  # [not win]
-        - {{ cxx_compiler }}_{{ target_platform }}  # [win]
+        - vs_{{ target_platform }}  # [win]
         - {{ compiler("cxx") }}
       source_files:
         - test
@@ -111,9 +111,9 @@ outputs:
         # while gxx depends on gxx_impl_linux-64
         - {{ cxx_compiler }} {{ cxx_compiler_version }}.*  # [not win]
         - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}.*  # [not win]
-        # Windows only has vs2022_win-64
-        # no `_impl_` and no `vs2022`
-        - {{ cxx_compiler }}_{{ target_platform }} {{ cxx_compiler_version }}.*  # [win]
+        # Windows only has vs_win-64 2022.11
+        # it's unclear if the .11 is required
+        - vs_{{ target_platform }} {{ cxx_compiler_version }}.*   # [win]
 
     test:
       commands:
