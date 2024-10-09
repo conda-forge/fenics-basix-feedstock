@@ -80,7 +80,7 @@ outputs:
         - pytest-xdist
         # make sure the above constraint is a real package
         - {{ cxx_compiler }}
-        - {{ cxx_compiler }}_impl_{{ target_platform }}
+        - {{ cxx_compiler }}_impl_{{ target_platform }}  # [not win]
       source_files:
         - test
       imports:
@@ -108,7 +108,7 @@ outputs:
         # clangxx_impl_osx-64 depends on clangxx,
         # while gxx depends on gxx_impl_linux-64
         - {{ cxx_compiler }} {{ cxx_compiler_version }}.*
-        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}.*
+        - {{ cxx_compiler }}_impl_{{ target_platform }} {{ cxx_compiler_version }}.*  # [not win]
 
     test:
       commands:
