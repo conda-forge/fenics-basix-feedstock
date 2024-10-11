@@ -76,6 +76,7 @@ outputs:
         - fenics-basix-nanobind-abi =={{ abi_version }}
     test:
       requires:
+        - pip
         - pytest
         - pytest-xdist
         # make sure the abi constraint is on an installable package
