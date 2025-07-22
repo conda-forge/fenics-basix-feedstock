@@ -110,11 +110,11 @@ outputs:
         # confine to nanobind builds with nanobind_abi constraints
         - nanobind >=2.4
         - if: not win
-          then: ${{ cxx_compiler }} ${{ cxx_compiler_version }}.*
-        - if: not win
-          then: ${{ cxx_compiler }}_impl_${{ target_platform }} ${{ cxx_compiler_version }}.*
-        - if: win
-          then: vs_${{ target_platform }} ${{ cxx_compiler_version }}.*
+          then:
+            - ${{ cxx_compiler }} ${{ cxx_compiler_version }}.*
+            - ${{ cxx_compiler }}_impl_${{ target_platform }} ${{ cxx_compiler_version }}.*
+          else:
+          - vs_${{ target_platform }} ${{ cxx_compiler_version }}.*
     tests:
       - script:
           - echo 'ok'
