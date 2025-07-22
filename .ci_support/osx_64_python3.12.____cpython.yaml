@@ -22,8 +22,6 @@ liblapack:
 - 3.9.* *netlib
 macos_machine:
 - x86_64-apple-darwin13.4.0
-nanobind:
-- '2.8'
 nanobind_abi:
 - '15'
 pin_run_as_build:
