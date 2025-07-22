@@ -94,6 +94,7 @@ outputs:
                 - ${{ cxx_compiler }}_impl_${{ target_platform }}
               else:
                 - vs_${{ target_platform }}
+                - blas * openblas
             - ${{ compiler("cxx") }}
         script:
           - pytest -v test/test_create.py
