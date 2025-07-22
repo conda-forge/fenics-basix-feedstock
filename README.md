@@ -3,7 +3,7 @@ About fenics-basix-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/fenics-basix-feedstock/blob/main/LICENSE.txt)
 
-Home: https://fenicsproject.org
+Home: https://fenicsproject.org/
 
 Package license: MIT
 

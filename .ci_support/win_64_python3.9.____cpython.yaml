@@ -1,5 +1,3 @@
-ace:
-- 8.0.1
 c_stdlib:
 - vs
 channel_sources:
@@ -9,23 +7,20 @@ channel_targets:
 cxx_compiler:
 - vs2022
 libblas:
-- 3.9 *netlib
+- 3.9.* *netlib
 libcblas:
-- 3.9 *netlib
+- 3.9.* *netlib
 liblapack:
-- 3.9 *netlib
+- 3.9.* *netlib
 nanobind:
-- '2.1'
+- '2.8'
+nanobind_abi:
+- '15'
 pin_run_as_build:
   python:
     min_pin: x.x
     max_pin: x.x
 python:
 - 3.9.* *_cpython
-python_impl:
-- cpython
 target_platform:
 - win-64
-zip_keys:
-- - python
-  - python_impl
