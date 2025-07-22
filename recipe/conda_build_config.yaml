@@ -1,4 +1,4 @@
-nanobind:
-  - 2.8
+# need a pinning for this to get it into context variables
+# we won't get notified when there is a new abi version
 nanobind_abi:
   - 15
