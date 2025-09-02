@@ -18,7 +18,7 @@ source:
   sha256: 60e96b2393084729b261cb10370f0e44d12735ab3dbd1f15890dec23b9e85329
 
 build:
-  number: 3
+  number: 4
   variant:
     use_keys:
       - python
@@ -57,7 +57,7 @@ outputs:
         - make
         - pkg-config
         - if: build_platform != target_platform
-          then: 
+          then:
             - python
             - cross-python_${{ target_platform }}
             - nanobind
@@ -117,7 +117,7 @@ outputs:
             - ${{ cxx_compiler }} ${{ cxx_compiler_version }}.*
             - ${{ cxx_compiler }}_impl_${{ target_platform }} ${{ cxx_compiler_version }}.*
           else:
-          - vs_${{ target_platform }} ${{ cxx_compiler_version }}.*
+            - vs_${{ target_platform }} ${{ cxx_compiler_version }}.*
     tests:
       - script:
           - echo 'ok'
