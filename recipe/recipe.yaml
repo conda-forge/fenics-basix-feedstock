@@ -6,8 +6,7 @@ context:
   # cxx_compiler_version not specified on Windows
   # extract from cxx_compiler
   cxx_compiler_version: ${{ cxx_compiler_version | default(cxx_compiler | replace("vs", "")) }}
-  # abi_version: 1.${{ nanobind_abi }}.${{ cxx_compiler_version }}
-  abi_version: 0.${{ nanobind }}.${{ cxx_compiler_version }}
+  abi_version: 1.${{ nanobind_abi }}.${{ cxx_compiler_version }}
 
 recipe:
   name: ${{ name|lower }}-meta
@@ -61,13 +60,13 @@ outputs:
             - python
             - cross-python_${{ target_platform }}
             - nanobind
-            # - nanobind-abi
+            - nanobind-abi
       host:
         - scikit-build-core
         - python
         - pip
         - nanobind
-        # - nanobind-abi
+        - nanobind-abi
         - ${{ pin_subpackage('fenics-libbasix', exact=True) }}
       run:
         - python
@@ -108,16 +107,9 @@ outputs:
         strong:
           - fenics-basix-nanobind-abi ==${{ abi_version }}
       run_constraints:
-        - nanobind ${{ nanobind }}.*
-        # - nanobind-abi ${{ nanobind_abi }}.*
+        - nanobind-abi ${{ nanobind_abi }}.*
         # confine to nanobind builds with nanobind_abi constraints
         - nanobind >=2.4
-        - if: not win
-          then:
-            - ${{ cxx_compiler }} ${{ cxx_compiler_version }}.*
-            - ${{ cxx_compiler }}_impl_${{ target_platform }} ${{ cxx_compiler_version }}.*
-          else:
-            - vs_${{ target_platform }} ${{ cxx_compiler_version }}.*
     tests:
       - script:
           - echo 'ok'
