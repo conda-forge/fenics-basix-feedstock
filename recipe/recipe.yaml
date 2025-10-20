@@ -6,7 +6,11 @@ context:
   # cxx_compiler_version not specified on Windows
   # extract from cxx_compiler
   cxx_compiler_version: ${{ cxx_compiler_version | default(cxx_compiler | replace("vs", "")) }}
-  abi_version: 1.${{ nanobind_abi }}.${{ cxx_compiler_version }}
+  abi_version: 2.${{ nanobind }}.${{ cxx_compiler_version }}
+  # Python Stable ABI
+  abi3_tag: cp312
+  build_abi3: ${{ is_abi3 and match(python, "3.12.*") }}
+  skip_abi3: ${{ is_abi3 and match(python, ">=3.13") }}
 
 recipe:
   name: ${{ name|lower }}-meta
@@ -21,6 +25,7 @@ build:
   variant:
     use_keys:
       - python
+  skip: skip_abi3
 
 outputs:
   - package:
@@ -47,7 +52,13 @@ outputs:
   - package:
       name: fenics-basix
     build:
-      script: build-basix-py
+      script:
+        file: build-basix-py
+        env:
+          SKBUILD_BUILD_VERBOSE: "true"
+          SKBUILD_WHEEL_PY_API: ${{ abi3_tag if build_abi3 else "" }}
+      python:
+        version_independent: ${{ build_abi3 }}
     requirements:
       build:
         - ${{ compiler("cxx") }}
@@ -64,6 +75,9 @@ outputs:
       host:
         - scikit-build-core
         - python
+        - if: build_abi3
+          then:
+            - python-abi3
         - pip
         - nanobind
         - nanobind-abi
@@ -80,6 +94,12 @@ outputs:
           imports:
             - basix
           pip_check: true
+          python_version:
+            - if: build_abi3
+              then:
+                - "3.12.*"
+                - "3.13.*"
+                - "3.14.*"
       - files:
           source:
             - test
@@ -99,6 +119,14 @@ outputs:
         script:
           - pytest -v test/test_create.py
 
+      - if: build_abi3 and not win
+        then:
+          - script:
+              - abi3audit $PREFIX/lib/python3.13/site-packages/basix/*.so --assume-minimum-abi3 3.12
+            requirements:
+              run:
+                - abi3audit
+                - python 3.13.*
   - package:
       name: fenics-basix-nanobind-abi
       version: ${{ abi_version }}
