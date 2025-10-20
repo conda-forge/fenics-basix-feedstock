@@ -6,6 +6,8 @@ channel_targets:
 - conda-forge main
 cxx_compiler:
 - vs2022
+is_abi3:
+- true
 libblas:
 - 3.9.* *netlib
 libcblas:
@@ -13,7 +15,9 @@ libcblas:
 liblapack:
 - 3.9.* *netlib
 nanobind:
-- '2.8'
+- '2.9'
+nanobind_abi:
+- '16'
 pin_run_as_build:
   python:
     min_pin: x.x
