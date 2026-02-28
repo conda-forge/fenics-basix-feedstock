@@ -18,10 +18,10 @@ recipe:
 
 source:
   url: https://github.com/fenics/basix/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: 2e168b2a27be6f71d0a19ef4c1c8f6cae5d52b8034f01a22ae03e80afb60eede
+  sha256: b93221dac7d3fea8c10e77617f6201036de35d0c5437440b718de69a28c3773f
 
 build:
-  number: 0
+  number: 1
   variant:
     use_keys:
       - python
@@ -48,7 +48,8 @@ outputs:
         - ${{ pin_subpackage("fenics-libbasix", upper_bound="x.x.x") }}
     tests:
       - package_contents:
-          lib: basix
+          lib:
+            - basix
   - package:
       name: fenics-basix
     build:
