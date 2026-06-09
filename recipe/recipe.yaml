@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: fenics-basix
-  version: "0.10.0"
+  version: "0.11.0"
   # cxx_compiler_version not specified on Windows
   # extract from cxx_compiler
   cxx_compiler_version: ${{ cxx_compiler_version | default(cxx_compiler | replace("vs", "")) }}
@@ -18,14 +18,14 @@ recipe:
 
 source:
   url: https://github.com/fenics/basix/archive/refs/tags/v${{ version }}.tar.gz
-  sha256: b93221dac7d3fea8c10e77617f6201036de35d0c5437440b718de69a28c3773f
+  sha256: bb4355f4cd3c98d5e944c2b8596f3240225d0a8ab3bd1344133d2056a7b2c388
 
 build:
-  number: 1
+  number: 0
   variant:
     use_keys:
       - python
-  skip: skip_abi3
+  skip: skip_abi3 or match(python, "<3.11")
 
 outputs:
   - package:

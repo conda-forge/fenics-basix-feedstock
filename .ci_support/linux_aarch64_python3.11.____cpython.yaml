@@ -11,7 +11,7 @@ cxx_compiler:
 cxx_compiler_version:
 - '14'
 docker_image:
-- quay.io/condaforge/linux-anvil-x86_64:alma9
+- quay.io/condaforge/linux-anvil-aarch64:alma9
 is_abi3:
 - true
 libblas:
@@ -21,9 +21,9 @@ libcblas:
 liblapack:
 - 3.9.* *netlib
 nanobind:
-- '2.9'
+- '2.12'
 nanobind_abi:
-- '16'
+- '19'
 pin_run_as_build:
   python:
     min_pin: x.x
