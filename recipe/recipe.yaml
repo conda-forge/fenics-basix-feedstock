@@ -25,7 +25,7 @@ build:
   variant:
     use_keys:
       - python
-  skip: skip_abi3
+  skip: skip_abi3 or match(python, "<3.11")
 
 outputs:
   - package:
